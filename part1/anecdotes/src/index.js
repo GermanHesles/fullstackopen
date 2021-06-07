@@ -1,20 +1,7 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
-const App = (props) => {
-  const [selected, setSelected] = useState(0)
 
-  return (
-    <div>
-      {props.anecdotes[selected]}
-      <p>
-        <button onClick={() => setSelected(random)}>
-          next anecdote
-        </button>
-      </p>
-    </div>
-  )
-}
 
 const anecdotes = [
   'If it hurts, do it more often',
@@ -25,9 +12,41 @@ const anecdotes = [
   'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.'
 ] 
 
-const random = (anecdotes) => {
-  Math.floor(Math.random() * (anecdotes.length));
-// console.log(aleatorio);
+const random = (list) => Math.floor(Math.random() * list.length);
+
+const App = (props) => {
+  const [selected, setSelected] = useState(0)
+  const [points, setPoints] = useState([0, 0, 0, 0, 0, 0])
+
+  const maxPoints = Math.max(...points)
+  const maxPointsIndex = points.indexOf(maxPoints)
+
+  return (
+    <div>
+      <h1>Anecdote of the day</h1>
+      {props.anecdotes[selected]}
+      <p>
+        It has {points[selected]} votes
+      </p>
+      <p>
+        <button onClick={() => { 
+            const copyPoints = [...points]
+            copyPoints[selected] += 1
+            setPoints(copyPoints)
+        }}>vote</button>
+        <button onClick={() => setSelected(random(anecdotes))}>
+          next anecdote
+        </button>
+      </p>
+      <h1>Anecdote with most votes</h1>
+      <p>
+        {anecdotes[maxPointsIndex]}
+      </p>
+      <p>
+        has {maxPoints}
+      </p>
+    </div>
+  )
 }
 
 ReactDOM.render(
