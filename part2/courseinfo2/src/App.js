@@ -70,9 +70,12 @@ const Content = (props) => {
 }
 
 const Total =(props) => {
-  // console.log(props.parts);
+  const total = props.parts.reduce((accumulator, currentValue) => {
+    return accumulator + currentValue.exercises
+  }, 0)
+  
   return (
-    <p>Number of exercises {props.parts[0].exercises + props.parts[1].exercises + props.parts[2].exercises}</p>
+    <p>Number of exercises {total}</p>
   ) 
 }
 
@@ -95,6 +98,11 @@ const App = () => {
         name: 'State of a component',
         exercises: 14,
         id: 3
+      },
+      {
+        name: 'Redux',
+        exercises: 11,
+        id: 4
       }
     ]
   }
