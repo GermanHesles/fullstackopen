@@ -35,9 +35,8 @@ const App = () => {
       </form>
       <h2>Numbers</h2>
       <div>
-        {
-          persons.map((person) => {
-            return <p>{person.name}</p>
+        {persons.map((person, index) => {
+            return <p key={index}>{person.name}</p>
           })
         }
       </div>
