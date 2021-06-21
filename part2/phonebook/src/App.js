@@ -1,8 +1,12 @@
 import React, { useState } from 'react'
+import { nanoid } from 'nanoid'
 
 const App = () => {
   const [ persons, setPersons ] = useState([
-    { name: 'Arto Hellas' }
+    { 
+      name: 'Arto Hellas',
+      id: nanoid()
+    }
   ]);
   const [ newName, setNewName ] = useState('');
 
@@ -12,11 +16,18 @@ const App = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    console.log('crear persona');
+    if (persons.some((person) => {
+      return person.name === newName
+    })) { 
+      alert(`${newName} is already added to phonebook`);
+      
+      return;
+    }
+
     const personsToAddToState = {
-      name: newName  
+      name: newName,
+      id: nanoid(),  
     };
-    console.log(personsToAddToState);
 
     setPersons(persons.concat(personsToAddToState));
     setNewName('');
@@ -35,8 +46,8 @@ const App = () => {
       </form>
       <h2>Numbers</h2>
       <div>
-        {persons.map((person, index) => {
-            return <p key={index}>{person.name}</p>
+        {persons.map((person,) => {
+            return <p key={person.id}>{person.name} {person.id} </p>
           })
         }
       </div>
