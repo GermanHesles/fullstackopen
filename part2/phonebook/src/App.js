@@ -38,6 +38,7 @@ const App = () => {
 
     setPersons(persons.concat(personsToAddToState));
     setNewName('');
+    setNewNumber('');
   };
 
   return (
