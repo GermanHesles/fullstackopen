@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 
+
 const CountryList = ({countriesFiltered}) => {
-  if(countriesFiltered.length > 10) {
+  if (countriesFiltered.length > 10) {
     return <p>Too many matches</p>
-  } if (countriesFiltered.length === 1) {
+  }
+
+  if (countriesFiltered.length === 1) {
     return countriesFiltered.map((country) => (
       <div key={country.cca2}> 
         <h1>{country.name.common}</h1>
@@ -17,14 +20,13 @@ const CountryList = ({countriesFiltered}) => {
         <img src={country.flags.png} alt={country.name.official} />
       </div>
     ))
-  } else {
-    return countriesFiltered.map((country) => {
-      return <p key={country.cca2}>{country.name.common}</p>
-    })
   }
+
+  return countriesFiltered.map((country) => {
+    return <p key={country.cca2}>{country.name.common}</p>
+  })
 }
    
-
 function App() {
   const [countries, setCountries] = useState([]);
   const [search, setSearch] = useState('');
