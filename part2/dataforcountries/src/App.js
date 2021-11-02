@@ -1,33 +1,27 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 
-const MatchedCoutry = ({countriesFiltered}) => {
+
+
+const Languages = ({languages}) => {
+  return (
+    <ul>{Object.values(languages).map((language) => {
+      return <li key={language}>{language}</li>
+    })}</ul>
+  )
+}
+
+const MatchedCountry = ({countriesFiltered}) => {
   return countriesFiltered.map((country) => (
     <div key={country.cca2}> 
       <h1>{country.name.common}</h1>
       <p>{country.capital}</p> 
       <p>population {country.population}</p>
       <h3>languages</h3>
-      <ul>{Object.values(country.languages).map((language) => {
-        return <li key={language}>{language}</li>
-      })}</ul> 
+      <Languages languages={country.languages} /> 
       <img src={country.flags.png} alt={country.name.official} />
     </div>
   ))
-}
-
-const CountryList = ({countriesFiltered}) => {
-  if (countriesFiltered.length > 10) {
-    return <p>Too many matches</p>
-  }
-
-  if (countriesFiltered.length === 1) {
-    return <MatchedCoutry countriesFiltered={countriesFiltered} />
-  }
-
-  return countriesFiltered.map((country) => {
-    return <p key={country.cca2}>{country.name.common}</p>
-  })
 }
    
 function App() {
@@ -45,17 +39,38 @@ function App() {
       })
   }, [])
 
-  const handleSearch = (event) =>
-  {
-    const finalSearch = event.target.value;
-
-    setSearch(finalSearch);
+  const filterSearch = (searchedCountry) => {
     const countriesFiltered = countries.filter((country) => {
-      return country.name.common.toLowerCase().includes(finalSearch.toLowerCase())
+      return country.name.common.toLowerCase().includes(searchedCountry.toLowerCase())
     })
+
     setCountriesFiltered(countriesFiltered);
   }
 
+  const handleSearch = (event) =>
+  {
+    const country = event.target.value;
+    filterSearch(country)
+    setSearch(country);
+  }
+
+  const CountryList = ({countriesFiltered}) => {
+    if (countriesFiltered.length > 10) {
+      return <p>Too many matches</p>
+    }
+  
+    if (countriesFiltered.length === 1) {
+      return <MatchedCountry countriesFiltered={countriesFiltered} />
+    }
+  
+    return countriesFiltered.map((country) => {
+      return (
+        <p key={country.cca2}>
+          {country.name.common} <button name='button' onClick={() => {filterSearch(country.name.common)}}>show</button>
+        </p>
+      )
+    })
+  }
 
   return (
     <div className="App">
