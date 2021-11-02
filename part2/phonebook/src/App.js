@@ -33,10 +33,9 @@ const PersonForm = ({
 
 const Persons = (props) => {
   return props.persons.map((person) => {
-    return <p key={person.id}>{person.name} {person.number} </p>
+    return <p key={person.id}>{person.name} {person.number}</p>
   })
 }
-
 
 const App = () => {
   const [ persons, setPersons ] = useState([]);

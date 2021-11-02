@@ -1,6 +1,20 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 
+const MatchedCoutry = ({countriesFiltered}) => {
+  return countriesFiltered.map((country) => (
+    <div key={country.cca2}> 
+      <h1>{country.name.common}</h1>
+      <p>{country.capital}</p> 
+      <p>population {country.population}</p>
+      <h3>languages</h3>
+      <ul>{Object.values(country.languages).map((language) => {
+        return <li key={language}>{language}</li>
+      })}</ul> 
+      <img src={country.flags.png} alt={country.name.official} />
+    </div>
+  ))
+}
 
 const CountryList = ({countriesFiltered}) => {
   if (countriesFiltered.length > 10) {
@@ -8,18 +22,7 @@ const CountryList = ({countriesFiltered}) => {
   }
 
   if (countriesFiltered.length === 1) {
-    return countriesFiltered.map((country) => (
-      <div key={country.cca2}> 
-        <h1>{country.name.common}</h1>
-        <p>{country.capital}</p> 
-        <p>population {country.population}</p>
-        <h3>languages</h3>
-        <ul>{Object.values(country.languages).map((language) => {
-          return <li>{language}</li>
-        })}</ul> 
-        <img src={country.flags.png} alt={country.name.official} />
-      </div>
-    ))
+    return <MatchedCoutry countriesFiltered={countriesFiltered} />
   }
 
   return countriesFiltered.map((country) => {
