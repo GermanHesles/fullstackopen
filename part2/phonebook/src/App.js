@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
+import getAllPersons from './services/persons/getAllPersons'
 
 const Filter = ({handleSearch, showPerson}) => {
   return (
@@ -44,15 +45,11 @@ const App = () => {
   const [showPerson, setShowPerson] = useState('');
 
   useEffect(() => {
-    console.log('effect')
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        console.log('promise fulfilled')
-        setPersons(response.data)
-      })
-  }, [])
-  console.log('render', persons.length, 'persons')
+    console.log('useEffect')
+    getAllPersons().then((persons) => {
+        setPersons(persons);
+      });
+  }, []);
 
   const handleSearch = (event) => {
     setShowPerson(event.target.value);
@@ -98,8 +95,6 @@ const App = () => {
 
   const personsAfterFilter = persons.filter(filterx)
 
-
-  
   return (
     <div>
       <h2>Phonebook</h2>
