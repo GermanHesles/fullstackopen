@@ -77,11 +77,17 @@ const App = () => {
 
     const personsToAddToState = {
       name: newName,
-      id: persons.length + 1,
-      number: newNumber  
+      number: newNumber,
+      userId: 1  
     };
 
-    setPersons(persons.concat(personsToAddToState));
+    axios
+      .post('http://localhost:3001/persons', personsToAddToState)
+      .then(response => {
+        const {data} = response
+        setPersons(prevPersons => prevPersons.concat(data))
+      })
+      
     setNewName('');
     setNewNumber('');
   };
