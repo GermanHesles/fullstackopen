@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+// import axios from 'axios'
 import getAllPersons from './services/persons/getAllPersons'
+import createPerson from './services/persons/createPerson'
 
 const Filter = ({handleSearch, showPerson}) => {
   return (
@@ -78,13 +79,11 @@ const App = () => {
       userId: 1  
     };
 
-    axios
-      .post('http://localhost:3001/persons', personsToAddToState)
-      .then(response => {
-        const {data} = response
-        setPersons(prevPersons => prevPersons.concat(data))
-      })
-      
+    createPerson(personsToAddToState)
+      .then(newPerson => {
+        setPersons(prevPersons => prevPersons.concat(newPerson))
+    })
+ 
     setNewName('');
     setNewNumber('');
   };
