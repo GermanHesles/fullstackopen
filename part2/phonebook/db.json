@@ -16,27 +16,10 @@
       "id": 3
     },
     {
-      "name": "Mary Poppendieck",
-      "number": "39-23-6423122",
+      "name": "Alan Turing",
+      "number": "41-32- 486346",
+      "userId": 1,
       "id": 4
-    },
-    {
-      "name": "Carlos Lomar",
-      "number": "090-32-345654",
-      "userId": 1,
-      "id": 5
-    },
-    {
-      "name": "Robert Plant",
-      "number": "090-777666",
-      "userId": 1,
-      "id": 6
-    },
-    {
-      "name": "Jimmy Page",
-      "number": "777-676767",
-      "userId": 1,
-      "id": 7
     }
   ]
 }
