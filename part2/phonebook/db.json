@@ -6,8 +6,8 @@
       "id": 1
     },
     {
-      "name": "Ada Lovelace",
-      "number": "39-44-5323523",
+      "name": "ada lovelace",
+      "number": "099- 12333223",
       "id": 2
     },
     {
@@ -20,6 +20,12 @@
       "number": "41-32- 486346",
       "userId": 1,
       "id": 4
+    },
+    {
+      "name": "Pepe Juan",
+      "number": " 787 - 3432235",
+      "userId": 1,
+      "id": 5
     }
   ]
 }

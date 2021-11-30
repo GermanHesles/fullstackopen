@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react'
-// import axios from 'axios'
 import getAllPersons from './services/persons/getAllPersons'
 import createPerson from './services/persons/createPerson'
-import axios from 'axios'
+import erasePerson  from './services/persons/erasePerson'
+import updatePerson from './services/persons/updatePerson'
+// import axios from 'axios'
+
 
 const Filter = ({handleSearch, showPerson}) => {
   return (
@@ -41,19 +43,14 @@ const App = () => {
   const [showPerson, setShowPerson] = useState('');
   const [working, setWorking] = useState(false);
 
-  const erasePerson = (person) => {
-    setWorking(true);
-    return axios.delete(`http://localhost:3001/persons/${person.id}/`)
-    .then(response => {
-      setWorking(false);
-      const {data} = response;
-      return data
-    })
-  }
+
 
   const Persons = (props) => {
     return props.persons.map((person) => {
-      return <p key={person.id}>{person.name} {person.number} <button onClick={() => erasePerson(person)}>delete</button></p>
+      return <p key={person.id}>
+        {person.name} {person.number}
+        <button onClick={() => erasePerson(person, setWorking, setPersons)}>delete</button>
+      </p>
     })
   }
 
@@ -61,7 +58,7 @@ const App = () => {
     getAllPersons().then((persons) => {
         setPersons(persons);
       });
-  }, [persons]);
+  }, []);
 
   const handleSearch = (event) => {
     setShowPerson(event.target.value);
@@ -77,10 +74,24 @@ const App = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault()
+    let foundPerson = undefined;
+
     if (persons.some((person) => {
-      return person.name === newName
+      foundPerson = person
+      console.log(foundPerson);
+
+      return person.name.toLowerCase() === newName.toLowerCase()
     })) {
-      alert(`${newName} is already added to phonebook`);
+      if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
+        const updatedPerson = {
+          name: newName,
+          number: newNumber,
+          id: foundPerson.id
+        }
+        updatePerson(updatedPerson, setPersons);
+
+      }
+
       return;
     }
 
