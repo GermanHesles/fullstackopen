@@ -26,6 +26,23 @@
       "number": " 787 - 3432235",
       "userId": 1,
       "id": 5
+    },
+    {
+      "name": "Oliver Reed ",
+      "number": "123- 3214325",
+      "userId": 1,
+      "id": 7
+    },
+    {
+      "name": "John Dee",
+      "number": "666 - 3336321",
+      "userId": 1,
+      "id": 8
+    },
+    {
+      "name": "Peter Weller",
+      "number": "364- 1234322",
+      "id": 9
     }
   ]
 }

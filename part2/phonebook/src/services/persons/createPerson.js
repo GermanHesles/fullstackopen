@@ -5,7 +5,7 @@ const createPerson = ({name, number, userId}) => {
     .then(response => {
       const {data} = response;
       return data
-    });
+    })
 }
 
 export default createPerson;

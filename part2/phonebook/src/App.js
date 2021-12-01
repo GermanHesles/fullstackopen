@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react'
-import getAllPersons from './services/persons/getAllPersons'
-import createPerson from './services/persons/createPerson'
-import erasePerson  from './services/persons/erasePerson'
-import updatePerson from './services/persons/updatePerson'
-// import axios from 'axios'
+import React, { useState, useEffect } from 'react';
+import getAllPersons from './services/persons/getAllPersons';
+import createPerson from './services/persons/createPerson';
+import erasePerson  from './services/persons/erasePerson';
+import updatePerson from './services/persons/updatePerson';
+import './App.css';
+
 
 
 const Filter = ({handleSearch, showPerson}) => {
@@ -38,12 +39,28 @@ const PersonForm = ({
 
 const App = () => {
   const [persons, setPersons] = useState([]);
-  const [newName, setNewName] = useState('');
-  const [newNumber, setNewNumber] = useState('');
+  const [newName, setNewName] = useState();
+  const [newNumber, setNewNumber] = useState();
   const [showPerson, setShowPerson] = useState('');
   const [working, setWorking] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(false);
+  const [confirmMessage, setConfirmMessage] = useState(false);
 
+  const setMessage = (message, type) => {
+    if (type === 'error') {
+      setErrorMessage(message)
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+    }
 
+    if (type === 'confirm') {
+      setConfirmMessage(message)
+      setTimeout(() => {
+        setConfirmMessage(null)
+      }, 5000)
+    }
+  }
 
   const Persons = (props) => {
     return props.persons.map((person) => {
@@ -76,6 +93,17 @@ const App = () => {
     event.preventDefault()
     let foundPerson = undefined;
 
+    console.log(newName, newNumber);
+
+    if (!newName) {
+      setMessage('Name is empty', 'error')
+      return;
+    }
+    if (!newNumber) {
+      setMessage('Number is empty', 'error')
+      return;
+    }
+
     if (persons.some((person) => {
       foundPerson = person
       console.log(foundPerson);
@@ -89,6 +117,7 @@ const App = () => {
           id: foundPerson.id
         }
         updatePerson(updatedPerson, setPersons);
+        setMessage(`Information of ${newName} has been updated`)
 
       }
 
@@ -104,7 +133,13 @@ const App = () => {
     createPerson(personsToAddToState)
       .then(newPerson => {
         setPersons(prevPersons => prevPersons.concat(newPerson))
-    })
+        setMessage(`Added ${newName}`, 'confirm')
+        return;
+      })
+      .catch(() => {
+        setMessage('An Error Happened', 'error')
+        return;
+      })
 
     setNewName('');
     setNewNumber('');
@@ -118,8 +153,11 @@ const App = () => {
 
   return (
     <div>
-      {working && <div style={{width: 100, height: 40, background: 'red'}}>Loading</div>}
+      {working && <div>Loading</div>}
       <h2>Phonebook</h2>
+      {confirmMessage && <div className="message message-confirm">{confirmMessage}</div>}
+      {errorMessage && <div className="message message-error">
+        {errorMessage}</div>}
       <Filter showPerson={showPerson} handleSearch={handleSearch}/>
       <h3>add a new</h3>
       <PersonForm
