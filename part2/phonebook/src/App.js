@@ -3,37 +3,13 @@ import getAllPersons from './services/persons/getAllPersons';
 import createPerson from './services/persons/createPerson';
 import erasePerson  from './services/persons/erasePerson';
 import updatePerson from './services/persons/updatePerson';
+import messenger from './helpers/messenger';
+import PersonForm from './PersonForm';
 import './App.css';
-
-
 
 const Filter = ({handleSearch, showPerson}) => {
   return (
     <input type='text' onChange={handleSearch} value={showPerson} />
-  )
-}
-
-const PersonForm = ({
-    handleSubmit,
-    handleChange,
-    newName,
-    handleChangeNumber,
-    newNumber
-  }) => {
-  return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        name:
-        <input type='text' onChange={handleChange} value={newName} />
-      </div>
-      <div>
-        number:
-        <input type='tel' onChange={handleChangeNumber} value={newNumber} />
-      </div>
-      <div>
-        <button type="submit">add</button>
-      </div>
-    </form>
   )
 }
 
@@ -46,25 +22,9 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState(false);
   const [confirmMessage, setConfirmMessage] = useState(false);
 
-  const setMessage = (message, type) => {
-    if (type === 'error') {
-      setErrorMessage(message)
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
-    }
-
-    if (type === 'confirm') {
-      setConfirmMessage(message)
-      setTimeout(() => {
-        setConfirmMessage(null)
-      }, 5000)
-    }
-  }
-
   const handleErasePerson = (person) => {
     erasePerson(person, setWorking, setPersons)
-    setMessage(`${person.name} has been removed from server`, 'confirm')
+    messenger(`${person.name} has been removed from server`, 'confirm', setErrorMessage, setConfirmMessage)
   }
 
   const Persons = (props) => {
@@ -98,14 +58,13 @@ const App = () => {
     event.preventDefault()
     let foundPerson = undefined;
 
-    console.log(newName, newNumber);
-
     if (!newName) {
-      setMessage('Name is empty', 'error')
+      messenger('Name is empty', 'error', setErrorMessage, setConfirmMessage)
       return;
     }
+
     if (!newNumber) {
-      setMessage('Number is empty', 'error')
+      messenger('Number is empty', 'error', setErrorMessage, setConfirmMessage)
       return;
     }
 
@@ -121,8 +80,7 @@ const App = () => {
           id: foundPerson.id
         }
         updatePerson(updatedPerson, setPersons);
-        setMessage(`Information of ${newName} has been updated`, 'confirm')
-
+        messenger(`Information of ${newName} has been updated`, 'confirm', setErrorMessage, setConfirmMessage)
       }
 
       return;
@@ -137,11 +95,11 @@ const App = () => {
     createPerson(personsToAddToState)
       .then(newPerson => {
         setPersons(prevPersons => prevPersons.concat(newPerson))
-        setMessage(`Added ${newName}`, 'confirm')
+        messenger(`Added ${newName}`, 'confirm', setErrorMessage, setConfirmMessage)
         return;
       })
       .catch(() => {
-        setMessage('An Error Happened', 'error')
+        messenger('An Error Happened', 'error', setErrorMessage, setConfirmMessage)
         return;
       })
 
