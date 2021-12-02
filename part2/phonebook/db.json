@@ -2,12 +2,12 @@
   "persons": [
     {
       "name": "Arto Hellas",
-      "number": "040-123456",
+      "number": "546- 765534",
       "id": 1
     },
     {
-      "name": "ada lovelace",
-      "number": "099- 12333223",
+      "name": "Ada Lovelace",
+      "number": "896-563222",
       "id": 2
     },
     {
@@ -20,12 +20,6 @@
       "number": "41-32- 486346",
       "userId": 1,
       "id": 4
-    },
-    {
-      "name": "Pepe Juan",
-      "number": " 787 - 3432235",
-      "userId": 1,
-      "id": 5
     },
     {
       "name": "Oliver Reed ",
@@ -43,6 +37,12 @@
       "name": "Peter Weller",
       "number": "364- 1234322",
       "id": 9
+    },
+    {
+      "name": "Carlos Ruiz",
+      "number": "532-235455",
+      "userId": 1,
+      "id": 11
     }
   ]
 }

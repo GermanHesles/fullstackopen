@@ -62,11 +62,16 @@ const App = () => {
     }
   }
 
+  const handleErasePerson = (person) => {
+    erasePerson(person, setWorking, setPersons)
+    setMessage(`${person.name} has been removed from server`, 'confirm')
+  }
+
   const Persons = (props) => {
     return props.persons.map((person) => {
       return <p key={person.id}>
         {person.name} {person.number}
-        <button onClick={() => erasePerson(person, setWorking, setPersons)}>delete</button>
+        <button onClick={() => {handleErasePerson(person)}}>delete</button>
       </p>
     })
   }
@@ -106,18 +111,17 @@ const App = () => {
 
     if (persons.some((person) => {
       foundPerson = person
-      console.log(foundPerson);
 
-      return person.name.toLowerCase() === newName.toLowerCase()
+      return person.name.toLowerCase().trim() === newName.toLowerCase().trim()
     })) {
       if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
         const updatedPerson = {
-          name: newName,
-          number: newNumber,
+          name: newName.trim(),
+          number: newNumber.trim(),
           id: foundPerson.id
         }
         updatePerson(updatedPerson, setPersons);
-        setMessage(`Information of ${newName} has been updated`)
+        setMessage(`Information of ${newName} has been updated`, 'confirm')
 
       }
 
