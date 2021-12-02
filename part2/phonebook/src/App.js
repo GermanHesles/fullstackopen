@@ -5,6 +5,7 @@ import erasePerson  from './services/persons/erasePerson';
 import updatePerson from './services/persons/updatePerson';
 import messenger from './helpers/messenger';
 import PersonForm from './PersonForm';
+import Persons from './Persons';
 import './App.css';
 
 const Filter = ({handleSearch, showPerson}) => {
@@ -25,15 +26,6 @@ const App = () => {
   const handleErasePerson = (person) => {
     erasePerson(person, setWorking, setPersons)
     messenger(`${person.name} has been removed from server`, 'confirm', setErrorMessage, setConfirmMessage)
-  }
-
-  const Persons = (props) => {
-    return props.persons.map((person) => {
-      return <p key={person.id}>
-        {person.name} {person.number}
-        <button onClick={() => {handleErasePerson(person)}}>delete</button>
-      </p>
-    })
   }
 
   useEffect(() => {
@@ -79,6 +71,7 @@ const App = () => {
           number: newNumber.trim(),
           id: foundPerson.id
         }
+
         updatePerson(updatedPerson, setPersons);
         messenger(`Information of ${newName} has been updated`, 'confirm', setErrorMessage, setConfirmMessage)
       }
@@ -131,10 +124,10 @@ const App = () => {
       />
       <h2>Numbers</h2>
       <div>
-        <Persons persons={personsAfterFilter}/>
+        <Persons handleErasePerson={handleErasePerson} persons={personsAfterFilter} />
       </div>
     </div>
   )
 }
 
-export default App
+export default App;
