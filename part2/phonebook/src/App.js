@@ -6,6 +6,7 @@ import updatePerson from './services/persons/updatePerson';
 import messenger from './helpers/messenger';
 import PersonForm from './PersonForm';
 import Persons from './Persons';
+import validatePerson from './helpers/validatePerson';
 import './App.css';
 
 const Filter = ({handleSearch, showPerson}) => {
@@ -50,13 +51,7 @@ const App = () => {
     event.preventDefault()
     let foundPerson = undefined;
 
-    if (!newName) {
-      messenger('Name is empty', 'error', setErrorMessage, setConfirmMessage)
-      return;
-    }
-
-    if (!newNumber) {
-      messenger('Number is empty', 'error', setErrorMessage, setConfirmMessage)
+    if (!validatePerson(newName, newNumber, setConfirmMessage, setErrorMessage)) {
       return;
     }
 
