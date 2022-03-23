@@ -40,23 +40,23 @@ const Languages = ({languages}) => {
 
 const MatchedCountry = ({countriesFiltered, setWeatherCountries}) => {
   return countriesFiltered.map((country) => (
-    <div key={country.cca2}> 
+    <div key={country.cca2}>
       <h1>{country.name.common}</h1>
-      <p>{country.capital}</p> 
+      <p>{country.capital}</p>
       <p>population {country.population}</p>
       <h3>languages</h3>
-      <Languages languages={country.languages} /> 
+      <Languages languages={country.languages} />
       <img src={country.flags.png} alt={country.name.official} />
       <WeatherCountry setWeatherCountries={setWeatherCountries} country={country}/>
     </div>
   ))
 }
-   
+
 function App() {
   const [countries, setCountries] = useState([]);
   const [search, setSearch] = useState('');
   const [countriesFiltered, setCountriesFiltered] = useState([]);
-  
+
   useEffect(() => {
     console.log('effect')
     axios
@@ -86,11 +86,11 @@ function App() {
     if (countriesFiltered.length > 10) {
       return <p>Too many matches</p>
     };
-  
+
     if (countriesFiltered.length === 1) {
       return <MatchedCountry countriesFiltered={countriesFiltered} />
     };
-  
+
     return countriesFiltered.map((country) => {
       return (
         <p key={country.cca2}>

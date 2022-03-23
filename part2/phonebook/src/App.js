@@ -17,8 +17,8 @@ const Filter = ({handleSearch, showPerson}) => {
 
 const App = () => {
   const [persons, setPersons] = useState([]);
-  const [newName, setNewName] = useState();
-  const [newNumber, setNewNumber] = useState();
+  const [newName, setNewName] = useState('');
+  const [newNumber, setNewNumber] = useState('');
   const [showPerson, setShowPerson] = useState('');
   const [working, setWorking] = useState(false);
   const [errorMessage, setErrorMessage] = useState(false);
@@ -51,9 +51,9 @@ const App = () => {
     event.preventDefault()
     let foundPerson = undefined;
 
-    if (!validatePerson(newName, newNumber, setConfirmMessage, setErrorMessage)) {
+    /* if (!validatePerson(newName, newNumber, setConfirmMessage, setErrorMessage)) {
       return;
-    }
+    } */
 
     if (persons.some((person) => {
       foundPerson = person
@@ -69,31 +69,29 @@ const App = () => {
 
         updatePerson(updatedPerson, setPersons);
         messenger(`Information of ${newName} has been updated`, 'confirm', setErrorMessage, setConfirmMessage)
-      }
 
-      return;
+        return;
+      }
     }
 
     const personsToAddToState = {
       name: newName,
       number: newNumber,
-      userId: 1
     };
 
     createPerson(personsToAddToState)
       .then(newPerson => {
         setPersons(prevPersons => prevPersons.concat(newPerson))
         messenger(`Added ${newName}`, 'confirm', setErrorMessage, setConfirmMessage)
-        return;
       })
-      .catch(() => {
-        messenger('An Error Happened', 'error', setErrorMessage, setConfirmMessage)
-        return;
+      .catch(error => {
+        console.log(error.response.data.error);
+        messenger(error.response.data.error, 'error', setErrorMessage, setConfirmMessage)
       })
 
     setNewName('');
     setNewNumber('');
-  };
+  }
 
   const filterx = (person) => {
     return person.name.toLowerCase().includes(showPerson.toLowerCase())

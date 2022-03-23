@@ -1,12 +1,12 @@
 import messenger from './messenger';
 
 const validatePerson = (newName, newNumber, setConfirmMessage, setErrorMessage) => {
-  if (!newName) {
+  if (!newName || newName.lenght < 3) {
     messenger('Name is empty', 'error', setErrorMessage, setConfirmMessage)
     return false;
   }
 
-  if (!newNumber) {
+  if (!newNumber || newNumber.lenght < 8) {
     messenger('Number is empty', 'error', setErrorMessage, setConfirmMessage)
     return false;
   }
