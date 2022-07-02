@@ -6,7 +6,8 @@ import updatePerson from './services/persons/updatePerson';
 import messenger from './helpers/messenger';
 import PersonForm from './PersonForm';
 import Persons from './Persons';
-import validatePerson from './helpers/validatePerson';
+import LoginForm from './LoginForm';
+
 import './App.css';
 
 const Filter = ({handleSearch, showPerson}) => {
@@ -23,6 +24,14 @@ const App = () => {
   const [working, setWorking] = useState(false);
   const [errorMessage, setErrorMessage] = useState(false);
   const [confirmMessage, setConfirmMessage] = useState(false);
+
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+
+  const handleLoginSubmit = (event) => {
+    event.preventDefault()
+    console.log('this is LOOOGGGIIINNN')
+  }
 
   const handleErasePerson = (person) => {
     erasePerson(person, setWorking, setPersons)
@@ -104,8 +113,15 @@ const App = () => {
       {working && <div>Loading</div>}
       <h2>Phonebook</h2>
       {confirmMessage && <div className="message message-confirm">{confirmMessage}</div>}
-      {errorMessage && <div className="message message-error">
-        {errorMessage}</div>}
+      {errorMessage && <div className="message message-error">{errorMessage}</div>}
+
+      <LoginForm
+        handleLoginSubmit={handleLoginSubmit}
+        username={username}
+        setUsername={setUsername}
+        password={password}
+        setPassword={setPassword}
+      />
       <Filter showPerson={showPerson} handleSearch={handleSearch}/>
       <h3>add a new</h3>
       <PersonForm
