@@ -1,35 +1,33 @@
 const LoginForm = ({
-    handleLoginSubmit,
+    handleLogin,
     username,
-    setUsername,
+    handleChangeUsername,
     password,
-    setPassword
+    handlePassword
   }) => {
   return (
-    <form onSubmit={handleLoginSubmit}>
+    <form onSubmit={handleLogin}>
       <div>
-        username:
         <input
-            type='text'
-            value={username}
-            name='Username'
-            placeholder='Username'
-            onChange={(event) => setUsername(event.target.value)}
+          type='text'
+          value={username}
+          name='Username'
+          placeholder='Username'
+          onChange={handleChangeUsername}
         />
       </div>
       <div>
-        password:
         <input
-            type='password'
-            value={password}
-            name='Password'
-            placeholder='Password'
-            onChange={(event) => setPassword(event.target.value)}
+          type='password'
+          value={password}
+          name='Password'
+          placeholder='Password'
+          onChange={handlePassword}
         />
       </div>
-      <div>
-        <button type="submit">Login</button>
-      </div>
+      <button>
+        Login
+      </button>
     </form>
   )
 }

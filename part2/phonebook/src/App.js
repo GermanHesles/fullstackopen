@@ -3,6 +3,7 @@ import getAllPersons from './services/persons/getAllPersons';
 import createPerson from './services/persons/createPerson';
 import erasePerson  from './services/persons/erasePerson';
 import updatePerson from './services/persons/updatePerson';
+import loginService from './services/login/login';
 import messenger from './helpers/messenger';
 import PersonForm from './PersonForm';
 import Persons from './Persons';
@@ -27,10 +28,28 @@ const App = () => {
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const [user, setUser] = useState(null)
 
-  const handleLoginSubmit = (event) => {
+  const handleChangeUsername = (event) => {
+    setUsername(event.target.value)
+  }
+  const handlePassword = (event) => {
+    setPassword(event.target.value)
+  }
+
+  const handleLogin = async (event) => {
     event.preventDefault()
-    console.log('this is LOOOGGGIIINNN')
+
+    const user = await loginService({
+      username,
+      password
+    })
+
+    console.log(user)
+
+    setUser(user)
+    setUsername('')
+    setPassword('')
   }
 
   const handleErasePerson = (person) => {
@@ -59,10 +78,6 @@ const App = () => {
   const handleSubmit = (event) => {
     event.preventDefault()
     let foundPerson = undefined;
-
-    /* if (!validatePerson(newName, newNumber, setConfirmMessage, setErrorMessage)) {
-      return;
-    } */
 
     if (persons.some((person) => {
       foundPerson = person
@@ -115,26 +130,33 @@ const App = () => {
       {confirmMessage && <div className="message message-confirm">{confirmMessage}</div>}
       {errorMessage && <div className="message message-error">{errorMessage}</div>}
 
-      <LoginForm
-        handleLoginSubmit={handleLoginSubmit}
-        username={username}
-        setUsername={setUsername}
-        password={password}
-        setPassword={setPassword}
-      />
-      <Filter showPerson={showPerson} handleSearch={handleSearch}/>
-      <h3>add a new</h3>
-      <PersonForm
-        handleSubmit={handleSubmit}
-        handleChange={handleChange}
-        newName={newName}
-        handleChangeNumber={handleChangeNumber}
-        newNumber={newNumber}
-      />
-      <h2>Numbers</h2>
-      <div>
-        <Persons handleErasePerson={handleErasePerson} persons={personsAfterFilter} />
-      </div>
+      {user === null && (
+        <LoginForm
+          handleLogin={handleLogin}
+          handleChangeUsername= {handleChangeUsername}
+          username={username}
+          password={password}
+          handlePassword={handlePassword}
+        />
+      )}
+
+      {user && (
+        <React.Parent>
+          <Filter showPerson={showPerson} handleSearch={handleSearch} />
+          <h3>add a new</h3>
+          <PersonForm
+            handleSubmit={handleSubmit}
+            handleChange={handleChange}
+            newName={newName}
+            handleChangeNumber={handleChangeNumber}
+            newNumber={newNumber}
+          />
+          <h2>Numbers</h2>
+          <div>
+            <Persons handleErasePerson={handleErasePerson} persons={personsAfterFilter} />
+          </div>
+        </React.Parent>
+      )}
     </div>
   )
 }
