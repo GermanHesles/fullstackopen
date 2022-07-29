@@ -40,16 +40,24 @@ const App = () => {
   const handleLogin = async (event) => {
     event.preventDefault()
 
-    const user = await loginService({
-      username,
-      password
-    })
+    try {
+      const user = await loginService({
+        username,
+        password
+      })
 
-    console.log(user)
+      console.log(user)
 
-    setUser(user)
-    setUsername('')
-    setPassword('')
+      setUser(user)
+      setUsername('')
+      setPassword('')
+    } catch (error) {
+      setErrorMessage('Wrong credentials')
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000);
+    }
+
   }
 
   const handleErasePerson = (person) => {
@@ -103,7 +111,9 @@ const App = () => {
       number: newNumber,
     };
 
-    createPerson(personsToAddToState)
+    const { token } = user
+
+    createPerson(personsToAddToState, {token})
       .then(newPerson => {
         setPersons(prevPersons => prevPersons.concat(newPerson))
         messenger(`Added ${newName}`, 'confirm', setErrorMessage, setConfirmMessage)
@@ -112,6 +122,8 @@ const App = () => {
         console.log(error.response.data.error);
         messenger(error.response.data.error, 'error', setErrorMessage, setConfirmMessage)
       })
+
+    console.log(token)
 
     setNewName('');
     setNewNumber('');
@@ -141,8 +153,7 @@ const App = () => {
       )}
 
       {user && (
-        <React.Parent>
-          <Filter showPerson={showPerson} handleSearch={handleSearch} />
+        <React.Fragment>
           <h3>add a new</h3>
           <PersonForm
             handleSubmit={handleSubmit}
@@ -151,12 +162,14 @@ const App = () => {
             handleChangeNumber={handleChangeNumber}
             newNumber={newNumber}
           />
-          <h2>Numbers</h2>
-          <div>
-            <Persons handleErasePerson={handleErasePerson} persons={personsAfterFilter} />
-          </div>
-        </React.Parent>
+        </React.Fragment>
       )}
+
+      <h2>Numbers</h2>
+      <div>
+        <Persons handleErasePerson={handleErasePerson} persons={personsAfterFilter} />
+      </div>
+      <Filter showPerson={showPerson} handleSearch={handleSearch} />
     </div>
   )
 }
