@@ -5,6 +5,7 @@ import erasePerson  from './services/persons/erasePerson';
 import updatePerson from './services/persons/updatePerson';
 import loginService from './services/login/login';
 import messenger from './helpers/messenger';
+import axios from './helpers/axios'
 import PersonForm from './PersonForm';
 import Persons from './Persons';
 import LoginForm from './LoginForm';
@@ -46,7 +47,8 @@ const App = () => {
         password
       })
 
-      console.log(user)
+      const {token} = user
+      axios.defaults.headers.common['Authorization'] = `bearer ${token}`;
 
       setUser(user)
       setUsername('')
@@ -111,9 +113,7 @@ const App = () => {
       number: newNumber,
     };
 
-    const { token } = user
-
-    createPerson(personsToAddToState, {token})
+    createPerson(personsToAddToState)
       .then(newPerson => {
         setPersons(prevPersons => prevPersons.concat(newPerson))
         messenger(`Added ${newName}`, 'confirm', setErrorMessage, setConfirmMessage)
@@ -122,8 +122,6 @@ const App = () => {
         console.log(error.response.data.error);
         messenger(error.response.data.error, 'error', setErrorMessage, setConfirmMessage)
       })
-
-    console.log(token)
 
     setNewName('');
     setNewNumber('');

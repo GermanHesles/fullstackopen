@@ -1,7 +1,7 @@
-import axios from "axios";
+import axios from '../../helpers/axios'
 
 const getAllPersons = () => {
-  return axios.get('http://localhost:3001/api/persons')
+  return axios.get('/persons')
     .then(response => {
       const {data} = response;
       return data

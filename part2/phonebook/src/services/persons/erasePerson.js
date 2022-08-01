@@ -1,9 +1,9 @@
-import axios from "axios";
+import axios from '../../helpers/axios'
 import getAllPersons from './getAllPersons'
 
 const erasePerson = (person, setWorking, setPersons) => {
   setWorking(true);
-  return axios.delete(`http://localhost:3001/api/persons/${person.id}/`)
+  return axios.delete(`/persons/${person.id}/`)
   .then(response => {
     setWorking(false);
     const {data} = response;

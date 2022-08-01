@@ -1,12 +1,7 @@
-import axios from "axios";
+import axios from '../../helpers/axios'
 
-const createPerson = (newObject, {token}) => {
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  }
-  return axios.post('http://localhost:3001/api/persons', newObject, config)
+const createPerson = (newObject) => {
+  return axios.post('/persons', newObject)
     .then(response => {
       const { data } = response;
       return data
