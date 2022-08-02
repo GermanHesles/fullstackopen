@@ -31,6 +31,23 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
 
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedPhonebookAppUser')
+    console.log(loggedUserJSON)
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      const { token } = user
+      axios.defaults.headers.common['Authorization'] = `bearer ${token}`
+    }
+  }, [])
+
+  useEffect(() => {
+    getAllPersons().then((persons) => {
+        setPersons(persons);
+      });
+  }, []);
+
   const handleChangeUsername = (event) => {
     setUsername(event.target.value)
   }
@@ -47,7 +64,11 @@ const App = () => {
         password
       })
 
-      const {token} = user
+      window.localStorage.setItem(
+        'loggedPhonebookAppUser', JSON.stringify(user)
+      )
+
+      const { token } = user
       axios.defaults.headers.common['Authorization'] = `bearer ${token}`;
 
       setUser(user)
@@ -66,12 +87,6 @@ const App = () => {
     erasePerson(person, setWorking, setPersons)
     messenger(`${person.name} has been removed from server`, 'confirm', setErrorMessage, setConfirmMessage)
   }
-
-  useEffect(() => {
-    getAllPersons().then((persons) => {
-        setPersons(persons);
-      });
-  }, []);
 
   const handleSearch = (event) => {
     setShowPerson(event.target.value);
